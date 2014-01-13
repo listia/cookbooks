@@ -2,7 +2,7 @@
 # Cookbook Name:: hostname
 # Recipe:: default
 
-raise Chef::Log.warn "Please set hostname" unless node["hostname"]["name"]
+return unless node["hostname"]["name"]
 
 template "/etc/hostname" do
   owner "root"

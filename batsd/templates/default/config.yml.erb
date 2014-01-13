@@ -1,0 +1,11 @@
+bind: <%= @config["bind"] %>
+port: <%= @config["receiver_port"] %>
+root: <%= @config["root"] %>
+redis:
+  host: <%= @config["redis"]["host"] %>
+  port: <%= @config["redis"]["port"] %>
+retentions:
+<% @config["retentions"].each do |k, v| %>
+  <%= k%>: <%= v%>
+<% end %>
+autotruncate: <%= @config["autotruncate"] %>

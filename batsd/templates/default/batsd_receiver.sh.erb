@@ -1,0 +1,46 @@
+#!/bin/bash
+#
+
+# Start the service
+start() {
+  if [ -f /var/lock/batsd-receiver ]
+  then
+    echo "batsd receiver already up running"
+  else
+    cd /opt/batsd
+    bin/batsd -c config.yml receiver &>> <%= @log_dir %>/batsd-receiver.log &
+    ### Create the lock file ###
+    mkdir -p /var/lock
+    touch /var/lock/batsd-receiver
+    echo "batsd receiver startup"
+  fi
+}
+# Restart the service FOO
+stop() {
+  if [ -f /var/lock/batsd-receiver ]
+  then
+    kill -9 `pgrep -f "bin/batsd.*receiver$"`
+    ### Now, delete the lock file ###
+    rm -f /var/lock/batsd-receiver
+    echo
+  else
+    echo "No batsd receiver running"
+  fi
+}
+### main logic ###
+case "$1" in
+  start)
+    start
+    ;;
+  stop)
+    stop
+    ;;
+  restart|reload|condrestart)
+    stop
+    start
+    ;;
+  *)
+    echo $"Usage: $0 {start|stop|restart|reload}"
+    exit 1
+esac
+exit 0

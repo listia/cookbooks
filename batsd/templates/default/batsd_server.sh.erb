@@ -1,0 +1,46 @@
+#!/bin/bash
+#
+
+# Start the service
+start() {
+  if [ -f /var/lock/batsd-server ]
+  then
+    echo "batsd server already up running"
+  else
+    cd /opt/batsd
+    bin/batsd -c config.yml -p <%= @server_port %> server &>> <%= @log_dir %>/batsd-server.log &
+    ### Create the lock file ###
+    mkdir -p /var/lock
+    touch /var/lock/batsd-server
+    echo "batsd server startup"
+  fi
+}
+# Restart the service FOO
+stop() {
+  if [ -f /var/lock/batsd-server ]
+  then
+    kill -9 `pgrep -f "bin/batsd.*server$"`
+    ### Now, delete the lock file ###
+    rm -f /var/lock/batsd-server
+    echo
+  else
+    echo "No batsd server running"
+  fi
+}
+### main logic ###
+case "$1" in
+  start)
+    start
+    ;;
+  stop)
+    stop
+    ;;
+  restart|reload|condrestart)
+    stop
+    start
+    ;;
+  *)
+    echo $"Usage: $0 {start|stop|restart|reload}"
+    exit 1
+esac
+exit 0
