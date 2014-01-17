@@ -1,0 +1,8 @@
+{
+  "sphinx": {
+    "use_mysql": true,
+    "install_method": "source",
+    "version": "0.9.9"
+  },
+  "run_list": [ "recipe[apt]", "recipe[sphinx]", "recipe[idx]"]
+}

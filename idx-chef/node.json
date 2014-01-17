@@ -1,0 +1,15 @@
+{
+  "sphinx": {
+    "use_mysql": true,
+    "install_method": "source",
+    "version": "0.9.9"
+  },
+  "idx": {
+    "ssh_keys": [
+      "somekey",
+      "keys2ssh"
+    ],
+    "mount_path": "somepath"
+  },
+  "run_list": [ "recipe[apt]", "recipe[build-essential]", "recipe[sphinx]", "recipe[idx]"]
+}
