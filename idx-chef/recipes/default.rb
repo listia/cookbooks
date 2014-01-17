@@ -20,6 +20,7 @@ user_account "listia" do
 end
 
 bash "mount and link shared folder" do
+  code "mkdir /mnt/listia"
   code "mount.glusterfs #{node["idx"]["mount_path"]} /mnt/listia"
   code "ln -s /mnt/listia /home/listia/shared"
 end
