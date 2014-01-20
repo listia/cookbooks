@@ -2,8 +2,6 @@
 # Cookbook Name:: hostname
 # Recipe:: default
 
-return unless node["hostname"]["name"]
-
 template "/etc/hostname" do
   owner "root"
   group "root"
