@@ -9,7 +9,10 @@
       "somekey",
       "keys2ssh"
     ],
-    "mount_path": "somepath"
+    "user", "",
+    "remote_mount_point": "somepath",
+    "local_mount_point": "somepath",
+    "mount_symbolic_path": "somepath"
   },
   "run_list": [ "recipe[apt]", "recipe[build-essential]", "recipe[sphinx]", "recipe[idx]"]
 }
