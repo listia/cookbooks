@@ -24,3 +24,11 @@ bash "mount and link shared folder" do
   code "mount.glusterfs #{node["idx"]["mount_path"]} /mnt/listia"
   code "ln -s /mnt/listia /home/listia/shared"
 end
+
+file "/etc//fstab.d/listia" do
+  owner "root"
+  group "root"
+  mode "0644"
+  action :create
+  content "#{node["idx"]["mount_path"]} /mnt/listia glusterfs defaults,_netdev 0 0"
+end
