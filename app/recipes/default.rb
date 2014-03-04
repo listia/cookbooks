@@ -36,3 +36,32 @@ file "/etc/fstab.d/#{node["app"]["user"]}" do
   action :create
   content "#{node["app"]["remote_mount_point"]} #{node["app"]["local_mount_point"]} glusterfs defaults,_netdev 0 0"
 end
+
+bash "rvm" do
+  user node["app"]["user"]
+  code "curl -sSL https://get.rvm.io | bash -s stable"
+  code "echo \"gem: --no-ri --no-rdoc\" >> ~/.gemrc"
+  code "source ~/.rvm/scripts/rvm"
+
+  code "rvm install #{node["app"]["ruby-version"]} --patch railsexpress"
+  code "rvm use #{node["app"]["ruby-version"]} && shift"
+
+  node["app"]["gems"].each do |gem_name|
+    code "gem install #{gem_name}"
+  end
+end
+
+bash "imagemagick" do
+  code "wget --no-verbose https://launchpad.net/imagemagick/main/6.6.9-7/+download/ImageMagick-6.6.9-7.tar.gz"
+  code "tar zxf ImageMagick-6.6.9-7.tar.gz"
+  code "rm -f ImageMagick-6.6.9-7.tar.gz"
+  code "apt-get install -y -q libjpeg8-dev libpng12-dev"
+  code "cd ImageMagick-6.6.9-7"
+
+  code "./configure --quiet"
+  code "make -s"
+  code "make -s install"
+  code "ldconfig /usr/local/lib"
+end
+
+
