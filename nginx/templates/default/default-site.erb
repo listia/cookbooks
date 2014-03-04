@@ -1,0 +1,16 @@
+server {
+  listen   80;
+  server_name  <%= node['hostname'] %>;
+
+  access_log  <%= node['nginx']['log_dir'] %>/localhost.access.log;
+
+  location / {
+    root   <%= node['nginx']['default_path'] %>;
+  <% if node['nginx']['source']['modules'].include?("nginx::passenger") %>
+    passenger_enabled on;
+    rack_env <%= node['nginx']['passenger']['rails_env'] %>;
+  <% else %>
+    index  index.html index.htm;
+  <% end %>
+  }
+}
